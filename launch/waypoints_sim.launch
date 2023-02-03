@@ -1,0 +1,12 @@
+<launch>
+  <node name="recorder" output="screen" pkg="nerf-ds-recorder" type="node.py"
+  args="
+  -i /realsense_gripper/color/image_raw
+  -l /realsense_gripper/aligned_depth_to_color/image_raw
+  -d $(find nerf-ds-recorder)/data
+  -t waypoints
+  -n 20
+  
+  --ip 127.0.0.1
+  " />
+</launch>
