@@ -101,13 +101,16 @@ class PathGenerator:
     def look_at(point, view_point):
         point = np.array(point)
         cur_point = np.array( view_point)
-        z_vec = (point - cur_point)
+        z_vec = ( cur_point - point)
         z_vec /= np.linalg.norm(z_vec)
-        x_vec = np.cross([0, 0, -1], z_vec)
+
+        x_vec = np.cross([0, 0, 1], z_vec)
         x_vec /= np.linalg.norm(x_vec)
+
         y_vec = np.cross(z_vec,x_vec)
         y_vec /= np.linalg.norm(y_vec)
-        rvec = Rotation.from_matrix([x_vec, y_vec, z_vec]).as_rotvec()
+        m = np.array([x_vec, y_vec, z_vec]).T
+        rvec = Rotation.from_matrix(m).as_rotvec()
         return rvec
 
 
@@ -117,16 +120,16 @@ class PathGenerator:
         '''
         import matplotlib.pyplot as plt
         from mpl_toolkits.mplot3d import Axes3D
-        fig = plt.figure(figsize=(10, 10))
+        fig = plt.figure()
         ax = fig.add_subplot(projection='3d')   
         ax.scatter(path[:, 0], path[:, 1], path[:, 2])
         vectors = []
         for p in path:
             mat = Rotation.from_rotvec(p[3:]).as_matrix()
-            vectors.append(list(mat @ [0, 0, -1]))
+            vectors.append(list(mat @ [0, 0, 1]))
         vectors = np.array(vectors)
         
-        ax.quiver(path[:, 0], path[:, 1], path[:, 2], vectors[:, 0], vectors[:, 1], vectors[:, 2], length=0.01, normalize=True, color='red')
+        ax.quiver(path[:, 0], path[:, 1], path[:, 2], vectors[:, 0], vectors[:, 1], vectors[:, 2], length=0.03, normalize=True, color='red')
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')

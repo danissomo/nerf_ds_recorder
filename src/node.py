@@ -66,7 +66,7 @@ def generate_dataset(pf : PathFolower, img_handler: ImageHandler, label, hfov, s
     if path_type == 'circle':
         v = np.array( kwargs.normal)/np.linalg.norm( kwargs.normal) 
         p = np.array(kwargs.position)
-        point = v*0.1 + p
+        point = v*1.0 + p
         path = PathGenerator.Circle(kwargs.radius, kwargs.normal, kwargs.position, samples, point)
     elif path_type == 'waypoints':
         path = PathGenerator.Waypoints(samples, pf)
@@ -74,6 +74,7 @@ def generate_dataset(pf : PathFolower, img_handler: ImageHandler, label, hfov, s
     else:
         rospy.logfatal(f'{path_type} path not implemented')
         exit()
+    PathGenerator.draw_path(path)
     PathGenerator.draw_path(path, f'{save_dir}/path_{label}.png')
     ds = dict()
     ds['camera_angle_x'] = hfov

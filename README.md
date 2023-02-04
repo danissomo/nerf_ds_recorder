@@ -141,5 +141,9 @@ Made by Daniil P. github: https://github.com/danissomo
 
 ![tools](data/tools/path_train.png)
 
+## new feature!
 
+Направление z-оси на визуализации пути
+
+![viz](doc/path_train.png)
 
