@@ -54,7 +54,7 @@ def cancel():
         shutil.rmtree(BASE_DIR)
 
 
-def generate_dataset(pf : PathFolower, img_handler: ImageHandler, label, hfov, samples, save_dir, path_type = 'circle', **kwargs):
+def generate_dataset(pf : PathFolower, img_handler: ImageHandler, label, hfov, samples, save_dir, path_type = 'circle', kwargs = None):
     '''
     pf - PathFolower class, that inmplements generator
     img_handler - ImageHandler class that captures sensor imges
@@ -64,9 +64,9 @@ def generate_dataset(pf : PathFolower, img_handler: ImageHandler, label, hfov, s
     '''
     rospy.loginfo(f'recording {label}, lenght {samples}, will be saved to {save_dir}')
     if path_type == 'circle':
-        path = PathGenerator.Circle(kwargs['radius'], kwargs['normal'], kwargs['position'], samples)
-        v = np.array( kwargs['normal'])/np.linalg.norm( kwargs['normal']) 
-        p = np.array(kwargs['position'])
+        path = PathGenerator.Circle(kwargs.radius, kwargs.normal, kwargs.position, samples)
+        v = np.array( kwargs.normal)/np.linalg.norm( kwargs.normal) 
+        p = np.array(kwargs.position)
         point = v*1.0 + p
     elif path_type == 'waypoints':
         path = PathGenerator.Waypoints(samples, pf)

@@ -1,9 +1,9 @@
 <launch>
-  <node name="recorder" output="screen" pkg="nerf-ds-recorder" type="node.py"
+  <node name="recorder" output="screen" pkg="nerf_ds_recorder" type="node.py"
   args="
   -i /realsense_gripper/color/image_raw
   -l /realsense_gripper/aligned_depth_to_color/image_raw
-  -d $(find nerf-ds-recorder)/data
+  -d $(find nerf_ds_recorder)/data
   -t circle
   -n 50
   -r 20
