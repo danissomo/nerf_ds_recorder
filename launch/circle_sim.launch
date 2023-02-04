@@ -6,7 +6,7 @@
   -d $(find nerf_ds_recorder)/data
   -t circle
   -n 50
-  -r 20
+  -r 0.1
   -p 0 -0.7 0.3
   --normal 0 -1 0
   --ip 127.0.0.1

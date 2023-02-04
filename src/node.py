@@ -64,17 +64,16 @@ def generate_dataset(pf : PathFolower, img_handler: ImageHandler, label, hfov, s
     '''
     rospy.loginfo(f'recording {label}, lenght {samples}, will be saved to {save_dir}')
     if path_type == 'circle':
-        path = PathGenerator.Circle(kwargs.radius, kwargs.normal, kwargs.position, samples)
         v = np.array( kwargs.normal)/np.linalg.norm( kwargs.normal) 
         p = np.array(kwargs.position)
-        point = v*1.0 + p
+        point = v*0.1 + p
+        path = PathGenerator.Circle(kwargs.radius, kwargs.normal, kwargs.position, samples, point)
     elif path_type == 'waypoints':
         path = PathGenerator.Waypoints(samples, pf)
         point = None
     else:
         rospy.logfatal(f'{path_type} path not implemented')
         exit()
-    # PathGenerator.draw_path(path)
     PathGenerator.draw_path(path, f'{save_dir}/path_{label}.png')
     ds = dict()
     ds['camera_angle_x'] = hfov
@@ -82,13 +81,12 @@ def generate_dataset(pf : PathFolower, img_handler: ImageHandler, label, hfov, s
     rospy.loginfo('press enter to start recording')
     input()
     
-    for i, tf in enumerate(pf.follow(path, point)):
+    for i, tf in enumerate(pf.follow(path)):
         color, depth = img_handler.get_data()
         color.save(f'{save_dir}/{label}/r_{i}.png')
         depth.save(f'{save_dir}/{label}/r_{i}_depth.png')
         frame = dict()
         frame['file_path'] = f'{label}/r_{i}'
-        # frame['rotation'] = 0.031415926535897934
         frame['transform_matrix'] = tf.tolist()
         ds['frames'].append(frame)
     import json
@@ -121,7 +119,6 @@ def main():
 
     global BASE_DIR
     BASE_DIR = base_dir
-
 
     pf = PathFolower(args.ip) 
     img_handler = ImageHandler(args.img_camera, args.depth_camera)

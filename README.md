@@ -61,7 +61,7 @@ Made by Daniil P. github: https://github.com/danissomo
 ![tools](doc/tool_dataset.png)
 
 
-### Cтруктура
+### Структура
 
 ```
 01-25-2023_12-08-17/
